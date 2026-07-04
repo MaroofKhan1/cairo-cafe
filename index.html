@@ -126,6 +126,40 @@ nav.scrolled{
 .nav-cta:hover::before{transform:scaleX(1)}
 @media(max-width:820px){.nav-links{display:none}}
 
+/* ============ MOBILE MENU ============ */
+#menuBtn{
+  display:none;background:rgba(13,9,6,.4);border:1px solid rgba(212,162,78,.55);
+  border-radius:4px;width:46px;height:42px;cursor:pointer;
+  flex-direction:column;align-items:center;justify-content:center;gap:5.5px;
+}
+#menuBtn span{display:block;width:20px;height:1.7px;background:var(--gold-bright);transition:transform .35s,opacity .35s}
+@media(max-width:820px){#menuBtn{display:flex}}
+body.menu-open #menuBtn span:nth-child(1){transform:translateY(7.2px) rotate(45deg)}
+body.menu-open #menuBtn span:nth-child(2){opacity:0}
+body.menu-open #menuBtn span:nth-child(3){transform:translateY(-7.2px) rotate(-45deg)}
+#mobileMenu{
+  position:fixed;inset:0;z-index:99;
+  background:rgba(10,7,4,.97);backdrop-filter:blur(12px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+  opacity:0;visibility:hidden;transition:opacity .45s,visibility .45s;
+}
+body.menu-open #mobileMenu{opacity:1;visibility:visible}
+#mobileMenu a{
+  font-family:'Cinzel',serif;font-size:1.4rem;font-weight:600;color:var(--papyrus);
+  text-decoration:none;letter-spacing:.22em;text-transform:uppercase;
+  opacity:0;transform:translateY(22px);transition:opacity .5s,transform .5s,color .3s;
+}
+#mobileMenu a:hover{color:var(--gold-bright)}
+body.menu-open #mobileMenu a{opacity:1;transform:translateY(0)}
+body.menu-open #mobileMenu a:nth-child(2){transition-delay:.06s}
+body.menu-open #mobileMenu a:nth-child(3){transition-delay:.12s}
+body.menu-open #mobileMenu a:nth-child(4){transition-delay:.18s}
+body.menu-open #mobileMenu a:nth-child(5){transition-delay:.24s}
+body.menu-open #mobileMenu a:nth-child(6){transition-delay:.3s}
+#mobileMenu .mm-ornament{color:var(--gold);font-size:1.3rem;opacity:0;transition:opacity .5s .35s}
+body.menu-open #mobileMenu .mm-ornament{opacity:.85}
+body.menu-open{overflow:hidden}
+
 /* ============ HERO ============ */
 .hero{
   position:relative;min-height:100svh;
@@ -503,16 +537,54 @@ h2{
 
 /* ============ REELS ============ */
 .reels-sec{background:var(--ink)}
-.reels-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:1.7rem;max-width:1020px;margin:0 auto;
+.reels-carousel{position:relative;max-width:1080px;margin:0 auto}
+.reels-rail{
+  display:flex;gap:1.4rem;overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding:.6rem .3rem 1.2rem;
+  scrollbar-width:none;-ms-overflow-style:none;
+  -webkit-overflow-scrolling:touch;
+  cursor:grab;
 }
+.reels-rail::-webkit-scrollbar{display:none}
+.reels-rail.dragging{cursor:grabbing;scroll-snap-type:none}
+.reels-carousel::before,.reels-carousel::after{
+  content:'';position:absolute;top:0;bottom:0;width:56px;z-index:4;pointer-events:none;
+}
+.reels-carousel::before{left:-1px;background:linear-gradient(90deg,var(--ink),transparent)}
+.reels-carousel::after{right:-1px;background:linear-gradient(-90deg,var(--ink),transparent)}
 .reel-slot{
-  position:relative;aspect-ratio:9/16;max-height:560px;width:100%;
+  position:relative;aspect-ratio:9/16;
+  flex:0 0 min(295px,76vw);max-height:560px;
+  scroll-snap-align:center;
   border:1px solid rgba(212,162,78,.32);border-radius:14px;overflow:hidden;
   background:var(--ink-3);cursor:pointer;
   transition:transform .5s,border-color .5s,box-shadow .5s;
 }
+.rail-btn{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:6;
+  width:52px;height:52px;border-radius:50%;cursor:pointer;
+  background:rgba(22,15,8,.85);border:1px solid var(--gold);color:var(--gold-bright);
+  font-size:1.4rem;line-height:1;display:flex;align-items:center;justify-content:center;
+  transition:all .35s;backdrop-filter:blur(6px);
+}
+.rail-btn:hover{background:var(--gold);color:var(--ink);box-shadow:0 8px 26px rgba(212,162,78,.45)}
+.rail-btn.off{opacity:.25;pointer-events:none}
+#railPrev{left:-14px}
+#railNext{right:-14px}
+@media(max-width:900px){#railPrev{left:4px}#railNext{right:4px}.rail-btn{width:44px;height:44px}}
+.rail-dots{display:flex;gap:.55rem;justify-content:center;margin-top:1.1rem}
+.rail-dots button{
+  width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(212,162,78,.28);transition:all .35s;padding:0;
+}
+.rail-dots button.active{background:var(--gold-bright);transform:scale(1.35);box-shadow:0 0 10px rgba(240,198,116,.6)}
+.swipe-hint{
+  text-align:center;margin-top:.4rem;font-size:.68rem;letter-spacing:.34em;
+  text-transform:uppercase;color:rgba(233,220,188,.45);
+}
+.swipe-hint .arr{display:inline-block;animation:hintSlide 1.8s ease-in-out infinite;color:var(--gold)}
+@keyframes hintSlide{0%,100%{transform:translateX(0);opacity:.5}50%{transform:translateX(-7px);opacity:1}}
 .reel-slot:hover{transform:translateY(-7px);border-color:rgba(212,162,78,.7);box-shadow:0 24px 55px rgba(0,0,0,.6),0 0 34px rgba(212,162,78,.1)}
 .reel-slot video{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;
@@ -610,6 +682,10 @@ h2{
 }
 .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
 @media(max-width:860px){.visit-grid{grid-template-columns:1fr}}
+/* fixed backgrounds stutter on iOS — use normal scroll on touch screens */
+@media(max-width:900px), (pointer:coarse){
+  .visit-sec{background-attachment:scroll,scroll}
+}
 .visit-card{
   background:rgba(22,15,8,.84);backdrop-filter:blur(10px);
   border:1px solid rgba(212,162,78,.32);border-radius:10px;padding:2.5rem 2.6rem;
@@ -718,7 +794,17 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
     <li><a href="#visit">Hours</a></li>
     <li><a class="nav-cta" href="#visit">Visit Us</a></li>
   </ul>
+  <button id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
+
+<div id="mobileMenu" aria-hidden="true">
+  <a href="#story">Our Story</a>
+  <a href="#menu">Menu</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#reels">Reels</a>
+  <a href="#visit">Hours &amp; Visit</a>
+  <div class="mm-ornament">☥</div>
+</div>
 
 <!-- ================= HERO ================= -->
 <header class="hero" id="top">
@@ -980,9 +1066,12 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
       <line x1="128" y1="13" x2="190" y2="13"/>
     </svg>
     <p class="sec-sub reveal">The pours, the cheese pulls, and the late-night vibes — fresh clips landing here soon.</p>
-    <div class="reels-grid">
+    <div class="reels-carousel reveal">
+      <button class="rail-btn" id="railPrev" aria-label="Previous videos">‹</button>
+      <button class="rail-btn" id="railNext" aria-label="Next videos">›</button>
+      <div class="reels-rail" id="reelsRail">
       <!-- VIDEO SLOTS: when the real clips arrive, they are embedded into window.__CAIRO_REELS
-           as {r1:"<base64 mp4>", r2:..., r3:...} and these slots light up automatically. -->
+           as {r1:"<base64 mp4>", r2:..., r6:...} and these slots light up automatically. -->
       <div class="reel-slot reveal" data-reel="r1" style="--d:0s">
         <video muted loop playsinline></video>
         <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHc0zUOCz1Ek_rNmRZsFdi1EnNObg5UZDOROJbWLrwdzWi1w6yEOiRJBsEIfGCnI0Z8_3lPyMABa8g8P2fUzkRlDUaPTm_icgj3si0uZI-qT6dZzbyu0abBEfNEHoVdb6V_XtFiQYCc9WHU=w800-h1400-k-no')">
@@ -1010,6 +1099,36 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
         </div>
         <div class="slot-badge">♪</div>
       </div>
+      <div class="reel-slot reveal" data-reel="r4" style="--d:.3s">
+        <video muted loop playsinline></video>
+        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAE-R5MyI4uleHE-rY0FgYHctzyGDdXLChu7cJhUoFcvubdCM0BOO7uvL0hb7m4FdGZTjQNPI501RAQIK8KuxGmbSDjGXvhWR9oIr6n4drZoS3R1CFBlGpycTD3cDErDfRzVurVEqGF0gg_B=w800-h1400-k-no')">
+          <div class="slot-play"></div>
+          <div class="slot-label">Feteer, Fresh &amp; Flaky</div>
+          <div class="slot-soon">Video Coming Soon</div>
+        </div>
+        <div class="slot-badge">♪</div>
+      </div>
+      <div class="reel-slot reveal" data-reel="r5" style="--d:.36s">
+        <video muted loop playsinline></video>
+        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAFd5gYWqqosjAXrQamOWDPTTkr-DXxXVYYraO-Ds5LtMgrWRqlI-dhkXm64wdiKF08X2aKkgYI2dskDEQo7hC_uqRMMWi7w9FZ6rwDO0FmlbuIYh7YR81w9_E7j-E9i-6lyGqb-QI9_86xr=w800-h1400-k-no')">
+          <div class="slot-play"></div>
+          <div class="slot-label">Behind the Glass</div>
+          <div class="slot-soon">Video Coming Soon</div>
+        </div>
+        <div class="slot-badge">♪</div>
+      </div>
+      <div class="reel-slot reveal" data-reel="r6" style="--d:.42s">
+        <video muted loop playsinline></video>
+        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAEwnSOmJtjm6pbUYG-2MhKsoh2rw0b8zIe7xqrNAdY2r3wHVYHX7P7OmLxIDimQiNi7GV4AmgdhaRqOQNMia77HoRX_Z5JtQeNZ883vrE2erRiaiOELgBMCDE5gKmDCzIAvdyuJnd9X-kLL=w800-h1400-k-no')">
+          <div class="slot-play"></div>
+          <div class="slot-label">Strawberry Season</div>
+          <div class="slot-soon">Video Coming Soon</div>
+        </div>
+        <div class="slot-badge">♪</div>
+      </div>
+      </div><!-- /reels-rail -->
+      <div class="rail-dots" id="railDots"></div>
+      <p class="swipe-hint"><span class="arr">←</span>&nbsp; Swipe to explore &nbsp;<span class="arr" style="animation-delay:.9s">←</span></p>
     </div>
     <div class="reels-cta reveal">
       <a class="btn btn-ghost" href="https://www.instagram.com/cairocafeofficial" target="_blank" rel="noopener">
@@ -1160,6 +1279,17 @@ addEventListener('scroll', () => {
   });
 }, {passive:true});
 toTop.addEventListener('click', () => scrollTo({top:0, behavior:'smooth'}));
+
+/* ---------- mobile menu ---------- */
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+function setMenu(open) {
+  document.body.classList.toggle('menu-open', open);
+  menuBtn.setAttribute('aria-expanded', open);
+  mobileMenu.setAttribute('aria-hidden', !open);
+}
+menuBtn.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
 /* ---------- ribbon ---------- */
 const track = document.getElementById('ribbonTrack');
@@ -1345,6 +1475,73 @@ document.querySelectorAll('.reel-slot').forEach(slot => {
       window.open('https://www.instagram.com/cairocafeofficial/reels/', '_blank', 'noopener'));
   }
 });
+
+/* ---------- reels carousel: swipe / drag / arrows / dots / auto-glide ---------- */
+const rail = document.getElementById('reelsRail');
+const slots = [...rail.querySelectorAll('.reel-slot')];
+const dotsBox = document.getElementById('railDots');
+const prevBtn = document.getElementById('railPrev');
+const nextBtn = document.getElementById('railNext');
+let userTouched = false;
+
+slots.forEach((_, i) => {
+  const b = document.createElement('button');
+  b.setAttribute('aria-label', 'Go to video ' + (i + 1));
+  b.addEventListener('click', () => { userTouched = true; goTo(i); });
+  dotsBox.appendChild(b);
+});
+const dots = [...dotsBox.children];
+
+const step = () => slots[0].offsetWidth + parseFloat(getComputedStyle(rail).gap || 22);
+const idx = () => Math.round(rail.scrollLeft / step());
+function goTo(i) {
+  const n = Math.max(0, Math.min(i, slots.length - 1));
+  rail.scrollTo({left: n * step(), behavior: 'smooth'});
+}
+function syncUI() {
+  const i = idx();
+  dots.forEach((d, k) => d.classList.toggle('active', k === i));
+  const max = rail.scrollWidth - rail.clientWidth - 4;
+  prevBtn.classList.toggle('off', rail.scrollLeft <= 4);
+  nextBtn.classList.toggle('off', rail.scrollLeft >= max);
+}
+rail.addEventListener('scroll', () => requestAnimationFrame(syncUI), {passive:true});
+syncUI();
+
+prevBtn.addEventListener('click', () => { userTouched = true; goTo(idx() - 1); });
+nextBtn.addEventListener('click', () => { userTouched = true; goTo(idx() + 1); });
+
+// drag-to-scroll with mouse (touch swiping is native)
+let dragging = false, startX = 0, startL = 0, moved = false;
+rail.addEventListener('pointerdown', e => {
+  if (e.pointerType !== 'mouse') { userTouched = true; return; }
+  dragging = true; moved = false; userTouched = true;
+  startX = e.clientX; startL = rail.scrollLeft;
+  rail.classList.add('dragging');
+});
+addEventListener('pointermove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - startX;
+  if (Math.abs(dx) > 6) moved = true;
+  rail.scrollLeft = startL - dx;
+});
+addEventListener('pointerup', () => {
+  if (!dragging) return;
+  dragging = false;
+  rail.classList.remove('dragging');
+  goTo(idx()); // settle onto nearest card
+});
+// swallow the click after a drag so it doesn't open a slot
+rail.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+
+// gentle auto-glide until the visitor interacts
+const autoGlide = setInterval(() => {
+  if (userTouched || document.hidden) { clearInterval(autoGlide); return; }
+  const r = rail.getBoundingClientRect();
+  if (r.top > innerHeight || r.bottom < 0) return; // only when visible
+  const i = idx();
+  goTo(i >= slots.length - 1 ? 0 : i + 1);
+}, 3800);
 </script>
 </body>
 </html>
