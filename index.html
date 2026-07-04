@@ -175,6 +175,10 @@ body.menu-open{overflow:hidden}
   opacity:0;transition:opacity 1.8s ease;z-index:1;
   filter:brightness(.8) contrast(1.04) saturate(1.05);
 }
+/* portrait phones crop the wide video hard — keep the pouring hand & cup in frame */
+@media(max-aspect-ratio:0.9){
+  .hero-video{object-position:31% center}
+}
 .hero-video.playing{opacity:1}
 /* when the video is running it becomes the backdrop — the illustrated scene bows out */
 .hero-scene,.stars,.birds,.haze{transition:opacity 1.8s ease}
@@ -331,6 +335,12 @@ h1 .word-gold .ltr{
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 .sun-glow{animation:sunPulse 9s ease-in-out infinite}
 @keyframes sunPulse{0%,100%{opacity:.9}50%{opacity:.65}}
+#pourGroup{transform:translate(1170px,590px)}
+/* narrow screens only show the middle ~370 units of the 1440-wide scene —
+   bring the dallah pour into the visible window (fallback scene, no video) */
+@media(max-width:700px){
+  #pourGroup{transform:translate(840px,690px) scale(.6)}
+}
 
 /* ============ MARQUEE RIBBON ============ */
 .ribbon{
@@ -861,7 +871,7 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
       <path d="M0,640 C240,600 420,660 720,640 C1020,620 1230,670 1440,635 L1440,800 L0,800 Z" fill="url(#duneGrad)"/>
       <path d="M0,700 C320,660 560,720 900,695 C1160,676 1330,715 1440,700 L1440,800 L0,800 Z" fill="#0d0812"/>
 
-      <g transform="translate(1170,590)"><g class="float-slow">
+      <g transform="translate(1170,590)" id="pourGroup"><g class="float-slow">
         <g transform="translate(-150,-160) scale(1.05)">
           <path d="M40,10 C36,2 50,-6 58,2 L70,14 C88,10 108,18 112,38 C118,66 112,86 96,96 L48,96 C30,84 26,58 34,36 C36,28 38,18 40,10 Z" fill="#c9922e"/>
           <path d="M40,10 C60,16 84,16 70,14 L58,2 C50,-6 36,2 40,10 Z" fill="#e8bb62"/>
