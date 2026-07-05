@@ -634,13 +634,6 @@ h2{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;
 }
 .reel-slot.loaded video{display:block}
-.slot-label{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;text-align:center;
-  font-family:'Cinzel',serif;font-size:1.02rem;font-weight:600;
-  letter-spacing:.12em;color:var(--papyrus);pointer-events:none;
-  padding:2.4rem 3rem 1.1rem;
-  background:linear-gradient(180deg,transparent,rgba(13,9,6,.88));
-}
 .slot-badge{ /* sound indicator once a real video is in */
   position:absolute;right:12px;bottom:12px;z-index:3;display:none;
   width:38px;height:38px;border-radius:50%;border:1px solid rgba(212,162,78,.6);
@@ -1111,58 +1104,47 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
            INSTA SLOTS: cover-image teasers that open the cafe's Instagram reels. -->
       <div class="reel-slot reveal" data-reel="r1" style="--d:0s">
         <video src="reel-1.mp4" poster="reel-1-poster.jpg" preload="metadata" muted loop playsinline></video>
-        <div class="slot-label">The Kunafa Pull</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-insta="i1" style="--d:.06s">
         <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHc0zUOCz1Ek_rNmRZsFdi1EnNObg5UZDOROJbWLrwdzWi1w6yEOiRJBsEIfGCnI0Z8_3lPyMABa8g8P2fUzkRlDUaPTm_icgj3si0uZI-qT6dZzbyu0abBEfNEHoVdb6V_XtFiQYCc9WHU=w800-h1400-k-no')"></div>
         <div class="slot-pill">Watch on Instagram</div>
-        <div class="slot-label">More Kunafa</div>
       </div>
       <div class="reel-slot reveal" data-reel="r2" style="--d:.12s">
         <video src="reel-2.mp4" poster="reel-2-poster.jpg" preload="metadata" muted loop playsinline></video>
-        <div class="slot-label">The Perfect Pour</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-insta="i2" style="--d:.18s">
         <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAFN0O7ECQuKAc9Pxe2q38wrGD1otEtqejQB7TULA6XDqnJqlPIZO1cGAs-kVbDvf_yU4RAXq5AJXRGO5W7YmKfQcZ29udslFrCLSZZnw43c_jVu8QPBaYcO99O43U4wV4OeV4wBw0njjGQ=w800-h1400-k-no')"></div>
         <div class="slot-pill">Watch on Instagram</div>
-        <div class="slot-label">Fresh Batter</div>
       </div>
       <div class="reel-slot reveal" data-reel="r3" style="--d:.24s">
         <video src="reel-3.mp4" poster="reel-3-poster.jpg" preload="metadata" muted loop playsinline></video>
-        <div class="slot-label">Late-Night Vibes</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-insta="i3" style="--d:.3s">
         <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHB3mSylCPx86mY7mCOj7l1pLvOt8Sc_CI4Rs6Jn2eys9Y1fJXu12JjukNRDcKzWKh06H2qoczY-W2ogDsemn2PdGH_q0c3NEtmyThTUS_TvRcQn4gQl5oiLDKW8fo-M-kOu5J3E2mQt_LI=w800-h1400-k-no')"></div>
         <div class="slot-pill">Watch on Instagram</div>
-        <div class="slot-label">Weekend Rush</div>
       </div>
       <div class="reel-slot reveal" data-reel="r4" style="--d:.36s">
         <video src="reel-4.mp4" poster="reel-4-poster.jpg" preload="metadata" muted loop playsinline></video>
-        <div class="slot-label">Feteer, Fresh &amp; Flaky</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-insta="i4" style="--d:.42s">
         <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAE-R5MyI4uleHE-rY0FgYHctzyGDdXLChu7cJhUoFcvubdCM0BOO7uvL0hb7m4FdGZTjQNPI501RAQIK8KuxGmbSDjGXvhWR9oIr6n4drZoS3R1CFBlGpycTD3cDErDfRzVurVEqGF0gg_B=w800-h1400-k-no')"></div>
         <div class="slot-pill">Watch on Instagram</div>
-        <div class="slot-label">On the Griddle</div>
       </div>
       <div class="reel-slot reveal" data-reel="r5" style="--d:.48s">
         <video src="reel-5.mp4" poster="reel-5-poster.jpg" preload="metadata" muted loop playsinline></video>
-        <div class="slot-label">Behind the Glass</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-insta="i5" style="--d:.54s">
         <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAFd5gYWqqosjAXrQamOWDPTTkr-DXxXVYYraO-Ds5LtMgrWRqlI-dhkXm64wdiKF08X2aKkgYI2dskDEQo7hC_uqRMMWi7w9FZ6rwDO0FmlbuIYh7YR81w9_E7j-E9i-6lyGqb-QI9_86xr=w800-h1400-k-no')"></div>
         <div class="slot-pill">Watch on Instagram</div>
-        <div class="slot-label">Sweet Finish</div>
       </div>
       <div class="reel-slot reveal" data-insta="i6" style="--d:.6s">
         <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAEwnSOmJtjm6pbUYG-2MhKsoh2rw0b8zIe7xqrNAdY2r3wHVYHX7P7OmLxIDimQiNi7GV4AmgdhaRqOQNMia77HoRX_Z5JtQeNZ883vrE2erRiaiOELgBMCDE5gKmDCzIAvdyuJnd9X-kLL=w800-h1400-k-no')"></div>
         <div class="slot-pill">Watch on Instagram</div>
-        <div class="slot-label">Strawberry Season</div>
       </div>
       </div><!-- /reels-rail -->
       <div class="rail-dots" id="railDots"></div>
@@ -1554,7 +1536,6 @@ function makeClone(slot, side) {
   c.appendChild(cover);
   const pill = slot.querySelector('.slot-pill');
   if (pill) c.appendChild(pill.cloneNode(true));
-  c.appendChild(slot.querySelector('.slot-label').cloneNode(true));
   if (slot.dataset.insta) {
     c.addEventListener('click', () =>
       window.open('https://www.instagram.com/cairocafeofficial/reels/', '_blank', 'noopener'));
