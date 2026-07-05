@@ -390,6 +390,11 @@ h2{
 }
 .reveal{opacity:0;transform:translateY(48px);transition:opacity .95s ease,transform .95s cubic-bezier(.22,1,.36,1);transition-delay:var(--d,0s)}
 .reveal.visible{opacity:1;transform:translateY(0)}
+/* reveal direction variants (used by gallery) */
+.reveal-l{transform:translate(-44px,0)}
+.reveal-r{transform:translate(44px,0)}
+.reveal-sc{transform:translateY(28px) scale(.94)}
+.reveal-l.visible,.reveal-r.visible,.reveal-sc.visible{transform:none}
 
 /* ============ ABOUT ============ */
 .about{background:var(--ink-2);overflow:hidden}
@@ -496,30 +501,57 @@ h2{
 /* ============ GALLERY ============ */
 .gallery-sec{background:var(--ink-2)}
 .gal-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:182px;gap:11px;
+  display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:182px;gap:12px;
+  grid-auto-flow:dense;
 }
 .gal-item{
   overflow:hidden;border-radius:5px;position:relative;cursor:zoom-in;
-  border:1px solid transparent;transition:border-color .5s;
+  border:1px solid rgba(212,162,78,.14);
+  transition:border-color .5s,transform .6s cubic-bezier(.22,1,.36,1),box-shadow .6s;
 }
-.gal-item:hover{border-color:rgba(212,162,78,.55)}
+.gal-item:hover{
+  border-color:rgba(212,162,78,.65);transform:translateY(-5px);
+  box-shadow:0 18px 44px rgba(0,0,0,.55),0 0 22px rgba(212,162,78,.14);
+}
 .gal-item img{
   width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .8s cubic-bezier(.22,1,.36,1),filter .8s;
+  transition:transform 1.2s cubic-bezier(.22,1,.36,1),filter 1.2s ease;
   filter:saturate(.92);
 }
-.gal-item:hover img{transform:scale(1.09);filter:saturate(1.12)}
-.gal-item::after{
-  content:'⊕';font-size:1.6rem;color:var(--gold-bright);
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(180deg,rgba(13,9,6,.15),rgba(13,9,6,.55));
-  opacity:0;transition:opacity .45s;pointer-events:none;
+.gal-item:hover img{transform:scale(1.05);filter:saturate(1.12)}
+/* gold hairline frame — settles inward on hover */
+.gal-item::before{
+  content:'';position:absolute;inset:10px;z-index:2;pointer-events:none;
+  border:1px solid rgba(212,162,78,.55);border-radius:2px;
+  opacity:0;transform:scale(1.045);
+  transition:opacity .6s ease,transform .7s cubic-bezier(.22,1,.36,1);
 }
-.gal-item:hover::after{opacity:1}
+.gal-item:hover::before{opacity:1;transform:scale(1)}
+/* caption veil */
+.gal-item::after{
+  content:attr(data-cap);z-index:1;
+  position:absolute;inset:0;display:flex;align-items:flex-end;
+  padding:.85rem .95rem;
+  font-family:'Jost',sans-serif;font-size:.66rem;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold-bright);
+  background:linear-gradient(180deg,rgba(13,9,6,0) 42%,rgba(13,9,6,.72));
+  opacity:0;transform:translateY(10px);
+  transition:opacity .55s ease,transform .55s ease;pointer-events:none;
+}
+.gal-item:hover::after{opacity:1;transform:translateY(0)}
 .g-tall{grid-row:span 2}
 .g-wide{grid-column:span 2}
+/* slow ambient ken-burns on hero tiles */
+@keyframes galKb{
+  0%{transform:scale(1) translate(0,0)}
+  100%{transform:scale(1.07) translate(-1.2%,1%)}
+}
+.g-kb img{animation:galKb 26s ease-in-out infinite alternate}
+.g-kb-alt img{animation-delay:-13s}
 @media(max-width:760px){
-  .gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px}
+  .gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px;gap:9px}
+  .g-kb img,.g-kb-alt img{animation:none}
+  .gal-item:hover{transform:none}
 }
 /* lightbox */
 #lightbox{
@@ -602,41 +634,12 @@ h2{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;
 }
 .reel-slot.loaded video{display:block}
-.slot-cover{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:1.1rem;text-align:center;
-  background-size:cover;background-position:center;
-}
-.slot-cover::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(13,9,6,.55),rgba(13,9,6,.35) 45%,rgba(13,9,6,.82));
-}
-.reel-slot.loaded .slot-cover{display:none}
-.slot-play{
-  position:relative;width:76px;height:76px;border-radius:50%;
-  border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;
-  background:rgba(13,9,6,.45);backdrop-filter:blur(4px);
-  animation:playPulse 2.6s ease-out infinite;transition:transform .35s;
-}
-.reel-slot:hover .slot-play{transform:scale(1.12)}
-.slot-play::after{
-  content:'';border-style:solid;border-width:13px 0 13px 22px;
-  border-color:transparent transparent transparent var(--gold-bright);
-  margin-left:5px;
-}
-@keyframes playPulse{
-  0%{box-shadow:0 0 0 0 rgba(212,162,78,.5)}
-  70%{box-shadow:0 0 0 22px rgba(212,162,78,0)}
-  100%{box-shadow:0 0 0 0 rgba(212,162,78,0)}
-}
 .slot-label{
-  position:relative;font-family:'Cinzel',serif;font-size:1.02rem;font-weight:600;
-  letter-spacing:.12em;color:var(--papyrus);padding:0 1.2rem;
-}
-.slot-soon{
-  position:relative;font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;
-  color:var(--gold-bright);border:1px solid rgba(212,162,78,.55);
-  padding:.4rem 1rem;border-radius:100px;background:rgba(13,9,6,.5);
+  position:absolute;left:0;right:0;bottom:0;z-index:2;text-align:center;
+  font-family:'Cinzel',serif;font-size:1.02rem;font-weight:600;
+  letter-spacing:.12em;color:var(--papyrus);pointer-events:none;
+  padding:2.4rem 3rem 1.1rem;
+  background:linear-gradient(180deg,transparent,rgba(13,9,6,.88));
 }
 .slot-badge{ /* sound indicator once a real video is in */
   position:absolute;right:12px;bottom:12px;z-index:3;display:none;
@@ -776,6 +779,8 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   html{scroll-behavior:auto}
+  .g-kb img,.g-kb-alt img{animation:none!important}
+  .gal-item:hover,.gal-item:hover img{transform:none!important}
 }
 </style>
 </head>
@@ -1053,17 +1058,20 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
     </svg>
     <p class="sec-sub reveal">Real moments from our café — tap any photo to view it large.</p>
     <div class="gal-grid">
-      <div class="gal-item g-tall reveal" style="--d:0s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHUl3t8c3IojaXUp3ApB5l73U9XIUUSJjXweG4ZpoiC5JZzzk6EDeYFw5W2Ql3WxBh4UnxZCPua1tqWAdphu0s0wpbcAJnrpE7swbzUZIk5GkF2bA2dbDJpDOmpzsdIERvtkj-562KT10sS=w900-h1400-k-no" alt="Cairo Café storefront at night"></div>
-      <div class="gal-item reveal" style="--d:.06s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAECT15RFreJIBxVJ6VIm8S0353dXcHkppBU5yxLIhrAqo7karu5DMsO9QRKGIHWJp5nP4HZjwr1P8OaVVzPGft1FZqS68IzHxkwI4ik5CpOwDBMMmJWzwXVVyTcphio_2kZducVUDIfou0=w900-h700-k-no" alt="Chocolate crepe with strawberries and blue refresher"></div>
-      <div class="gal-item reveal" style="--d:.12s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAE5bK-rhfqd2zYeexTEUnzd3Wl90wssNDXtyJ7XDcvDwp4c-F6rKYzFeTvhu9qZqk1j-8_putn2jMkSXRfgg46eh1OobcRXtFHTiQb21WjI4tiGaklNupvfra92QWoaAlCpCwcly9ssmLqH=w900-h700-k-no" alt="Espresso bar and menu board"></div>
-      <div class="gal-item g-tall reveal" style="--d:.18s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAG22ENfOOZhJ1LC0p_SJWJBarNgcE0QhbSyBylf5RMZXO0jz5A7hGOAVVx7flKgQcdj9SNqXEjruEV6bLYXnfLkYmG_VMrgSeyGK7J5MjQxL6Qb1ST_lSR92hxak-_swyhDzCs-Gh1jc2Y=w900-h1400-k-no" alt="Lotus kunafa with caramel drizzle"></div>
-      <div class="gal-item reveal" style="--d:.24s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHBorpEiecSydOTyBqT1IPbqlN3fGiDP8ZAd1NEnOMAukSJ5Q9ApaBqh62gpYlMsxd6sD_4ooZsfSGPdWWLl0JFvBNnbQ9OA1FWZUAHHnUQ94IUsDmBDMpFEY_cfzJeoV0w--UpTas4y9A=w900-h700-k-no" alt="Cozy lounge seating with leather sofas"></div>
-      <div class="gal-item reveal" style="--d:.3s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEAQPMh5qORofgWjf4ZGKlJ77YEBZgScKd7TpkOMZol0azsWgeA0L_7-OCC2d_w6WQp52oByZHBkGxC_WMO51WKX7dAWoUO2xCPuZ9yqlyUWmDfhqrovLD4eBCnDf2k7kRyoE1pSUU-eMVD=w900-h700-k-no" alt="Crepe platter with fresh fruit and coffee"></div>
-      <div class="gal-item g-wide reveal" style="--d:.1s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHB3mSylCPx86mY7mCOj7l1pLvOt8Sc_CI4Rs6Jn2eys9Y1fJXu12JjukNRDcKzWKh06H2qoczY-W2ogDsemn2PdGH_q0c3NEtmyThTUS_TvRcQn4gQl5oiLDKW8fo-M-kOu5J3E2mQt_LI=w1400-h700-k-no" alt="String-lit dining room at Cairo Café"></div>
-      <div class="gal-item reveal" style="--d:.16s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAGHmxZkJc2H0QzZ0zvDsYDQEcftEoNpoDeWNyangZngw485a80jaxZziq4ACzXGtkGtIgZPWr6KEysvEkjUloQ57BiczFW1xPcmY89tEYDbKuc4ZIIQZVNM7eDu_qKuqG3cUjwJYpcR4ulU=w900-h700-k-no" alt="Iced drink at the counter"></div>
-      <div class="gal-item reveal" style="--d:.22s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAFu_T-JtXVnzJQaW-PJDKeVTey_SRgyPXNm2KSQ0hjv3itv6owrP5xhVL9F4ZxFJq87iXb_2y8E8UUlEDlDKMgGpi6CLLjyVvJZ92FdBnrwaMrtt3MiGqjHuvG43ATXe404hy-mJ3oLC86K=w900-h700-k-no" alt="Games and seating area"></div>
-      <div class="gal-item reveal" style="--d:.28s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEo3cFNaIIiPY35m7BBMtGtQumJ2Dos1Yj9Zd3ZW_cGgB7Rpu5LswEjo57eii3gOhmrRcj0cRh0XgMqBWwqmP1Xh1nRgRmTdMfzJYEbrNUBkDpPqN22B1BRnLn1t8Yz0JoSuG-AvkqhkUzF=w900-h700-k-no" alt="Baklava and espresso on wood"></div>
-      <div class="gal-item reveal" style="--d:.34s"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAETZ1r9TThfb1wbe7Kd36qbKjaMB9XFT3SSZvK4aWXvsRrf-yhj8_dxU8MxCepysh4j1onTroDjRSZTMhE0Zi8bfQ-qN9B0b7SauJRTm46_R5FT3HdXCCi5KaJR-cIycns7uFd89B5lOnPK=w900-h700-k-no" alt="Feteer pastry with pistachio"></div>
+      <div class="gal-item g-tall g-kb reveal reveal-l" style="--d:0s" data-cap="Our Storefront"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHUl3t8c3IojaXUp3ApB5l73U9XIUUSJjXweG4ZpoiC5JZzzk6EDeYFw5W2Ql3WxBh4UnxZCPua1tqWAdphu0s0wpbcAJnrpE7swbzUZIk5GkF2bA2dbDJpDOmpzsdIERvtkj-562KT10sS=w900-h1400-k-no" alt="Cairo Café storefront at night"></div>
+      <div class="gal-item reveal reveal-sc" style="--d:.08s" data-cap="Chocolate Crepe"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAECT15RFreJIBxVJ6VIm8S0353dXcHkppBU5yxLIhrAqo7karu5DMsO9QRKGIHWJp5nP4HZjwr1P8OaVVzPGft1FZqS68IzHxkwI4ik5CpOwDBMMmJWzwXVVyTcphio_2kZducVUDIfou0=w900-h700-k-no" alt="Chocolate crepe with strawberries and blue refresher"></div>
+      <div class="gal-item reveal reveal-sc" style="--d:.16s" data-cap="The Espresso Bar"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAE5bK-rhfqd2zYeexTEUnzd3Wl90wssNDXtyJ7XDcvDwp4c-F6rKYzFeTvhu9qZqk1j-8_putn2jMkSXRfgg46eh1OobcRXtFHTiQb21WjI4tiGaklNupvfra92QWoaAlCpCwcly9ssmLqH=w900-h700-k-no" alt="Espresso bar and menu board"></div>
+      <div class="gal-item g-tall reveal reveal-r" style="--d:.24s" data-cap="Lotus Kunafa"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAG22ENfOOZhJ1LC0p_SJWJBarNgcE0QhbSyBylf5RMZXO0jz5A7hGOAVVx7flKgQcdj9SNqXEjruEV6bLYXnfLkYmG_VMrgSeyGK7J5MjQxL6Qb1ST_lSR92hxak-_swyhDzCs-Gh1jc2Y=w900-h1400-k-no" alt="Lotus kunafa with caramel drizzle"></div>
+      <div class="gal-item reveal reveal-l" style="--d:.12s" data-cap="The Lounge"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHBorpEiecSydOTyBqT1IPbqlN3fGiDP8ZAd1NEnOMAukSJ5Q9ApaBqh62gpYlMsxd6sD_4ooZsfSGPdWWLl0JFvBNnbQ9OA1FWZUAHHnUQ94IUsDmBDMpFEY_cfzJeoV0w--UpTas4y9A=w900-h700-k-no" alt="Cozy lounge seating with leather sofas"></div>
+      <div class="gal-item reveal reveal-r" style="--d:.2s" data-cap="Crepe Platter"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEAQPMh5qORofgWjf4ZGKlJ77YEBZgScKd7TpkOMZol0azsWgeA0L_7-OCC2d_w6WQp52oByZHBkGxC_WMO51WKX7dAWoUO2xCPuZ9yqlyUWmDfhqrovLD4eBCnDf2k7kRyoE1pSUU-eMVD=w900-h700-k-no" alt="Crepe platter with fresh fruit and coffee"></div>
+      <div class="gal-item g-tall reveal reveal-l" style="--d:0s" data-cap="From the Kitchen"><img loading="lazy" src="gallery-n1.jpg" alt="Cairo Café dish close-up"></div>
+      <div class="gal-item g-wide g-kb g-kb-alt reveal reveal-sc" style="--d:.1s" data-cap="The Dining Room"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHB3mSylCPx86mY7mCOj7l1pLvOt8Sc_CI4Rs6Jn2eys9Y1fJXu12JjukNRDcKzWKh06H2qoczY-W2ogDsemn2PdGH_q0c3NEtmyThTUS_TvRcQn4gQl5oiLDKW8fo-M-kOu5J3E2mQt_LI=w1400-h700-k-no" alt="String-lit dining room at Cairo Café"></div>
+      <div class="gal-item g-tall reveal reveal-r" style="--d:.2s" data-cap="Inside the Café"><img loading="lazy" src="gallery-n2.jpg" alt="Inside Cairo Café"></div>
+      <div class="gal-item reveal reveal-l" style="--d:.14s" data-cap="At the Counter"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAGHmxZkJc2H0QzZ0zvDsYDQEcftEoNpoDeWNyangZngw485a80jaxZziq4ACzXGtkGtIgZPWr6KEysvEkjUloQ57BiczFW1xPcmY89tEYDbKuc4ZIIQZVNM7eDu_qKuqG3cUjwJYpcR4ulU=w900-h700-k-no" alt="Iced drink at the counter"></div>
+      <div class="gal-item reveal reveal-r" style="--d:.22s" data-cap="Games &amp; Gathering"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAFu_T-JtXVnzJQaW-PJDKeVTey_SRgyPXNm2KSQ0hjv3itv6owrP5xhVL9F4ZxFJq87iXb_2y8E8UUlEDlDKMgGpi6CLLjyVvJZ92FdBnrwaMrtt3MiGqjHuvG43ATXe404hy-mJ3oLC86K=w900-h700-k-no" alt="Games and seating area"></div>
+      <div class="gal-item g-wide reveal reveal-l" style="--d:0s" data-cap="Moments at Cairo"><img loading="lazy" src="gallery-n3.jpg" alt="A moment at Cairo Café"></div>
+      <div class="gal-item reveal reveal-sc" style="--d:.12s" data-cap="Baklava &amp; Espresso"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEo3cFNaIIiPY35m7BBMtGtQumJ2Dos1Yj9Zd3ZW_cGgB7Rpu5LswEjo57eii3gOhmrRcj0cRh0XgMqBWwqmP1Xh1nRgRmTdMfzJYEbrNUBkDpPqN22B1BRnLn1t8Yz0JoSuG-AvkqhkUzF=w900-h700-k-no" alt="Baklava and espresso on wood"></div>
+      <div class="gal-item reveal reveal-r" style="--d:.2s" data-cap="Feteer with Pistachio"><img loading="lazy" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAETZ1r9TThfb1wbe7Kd36qbKjaMB9XFT3SSZvK4aWXvsRrf-yhj8_dxU8MxCepysh4j1onTroDjRSZTMhE0Zi8bfQ-qN9B0b7SauJRTm46_R5FT3HdXCCi5KaJR-cIycns7uFd89B5lOnPK=w900-h700-k-no" alt="Feteer pastry with pistachio"></div>
     </div>
   </div>
 </section>
@@ -1087,65 +1095,35 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
       <circle cx="95" cy="13" r="2.6"/>
       <line x1="128" y1="13" x2="190" y2="13"/>
     </svg>
-    <p class="sec-sub reveal">The pours, the cheese pulls, and the late-night vibes — fresh clips landing here soon.</p>
+    <p class="sec-sub reveal">The pours, the cheese pulls, and the late-night vibes — straight from the café.</p>
     <div class="reels-carousel reveal">
       <button class="rail-btn" id="railPrev" aria-label="Previous videos">‹</button>
       <button class="rail-btn" id="railNext" aria-label="Next videos">›</button>
       <div class="reels-rail" id="reelsRail">
-      <!-- VIDEO SLOTS: when the real clips arrive, they are embedded into window.__CAIRO_REELS
-           as {r1:"<base64 mp4>", r2:..., r6:...} and these slots light up automatically. -->
+      <!-- VIDEO SLOTS: local clips, lazy-loaded (preload=metadata) with poster frames -->
       <div class="reel-slot reveal" data-reel="r1" style="--d:0s">
-        <video muted loop playsinline></video>
-        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHc0zUOCz1Ek_rNmRZsFdi1EnNObg5UZDOROJbWLrwdzWi1w6yEOiRJBsEIfGCnI0Z8_3lPyMABa8g8P2fUzkRlDUaPTm_icgj3si0uZI-qT6dZzbyu0abBEfNEHoVdb6V_XtFiQYCc9WHU=w800-h1400-k-no')">
-          <div class="slot-play"></div>
-          <div class="slot-label">The Kunafa Pull</div>
-          <div class="slot-soon">Video Coming Soon</div>
-        </div>
+        <video src="reel-1.mp4" poster="reel-1-poster.jpg" preload="metadata" muted loop playsinline></video>
+        <div class="slot-label">The Kunafa Pull</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-reel="r2" style="--d:.12s">
-        <video muted loop playsinline></video>
-        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAFN0O7ECQuKAc9Pxe2q38wrGD1otEtqejQB7TULA6XDqnJqlPIZO1cGAs-kVbDvf_yU4RAXq5AJXRGO5W7YmKfQcZ29udslFrCLSZZnw43c_jVu8QPBaYcO99O43U4wV4OeV4wBw0njjGQ=w800-h1400-k-no')">
-          <div class="slot-play"></div>
-          <div class="slot-label">The Perfect Pour</div>
-          <div class="slot-soon">Video Coming Soon</div>
-        </div>
+        <video src="reel-2.mp4" poster="reel-2-poster.jpg" preload="metadata" muted loop playsinline></video>
+        <div class="slot-label">The Perfect Pour</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-reel="r3" style="--d:.24s">
-        <video muted loop playsinline></video>
-        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHB3mSylCPx86mY7mCOj7l1pLvOt8Sc_CI4Rs6Jn2eys9Y1fJXu12JjukNRDcKzWKh06H2qoczY-W2ogDsemn2PdGH_q0c3NEtmyThTUS_TvRcQn4gQl5oiLDKW8fo-M-kOu5J3E2mQt_LI=w800-h1400-k-no')">
-          <div class="slot-play"></div>
-          <div class="slot-label">Late-Night Vibes</div>
-          <div class="slot-soon">Video Coming Soon</div>
-        </div>
+        <video src="reel-3.mp4" poster="reel-3-poster.jpg" preload="metadata" muted loop playsinline></video>
+        <div class="slot-label">Late-Night Vibes</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-reel="r4" style="--d:.3s">
-        <video muted loop playsinline></video>
-        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAE-R5MyI4uleHE-rY0FgYHctzyGDdXLChu7cJhUoFcvubdCM0BOO7uvL0hb7m4FdGZTjQNPI501RAQIK8KuxGmbSDjGXvhWR9oIr6n4drZoS3R1CFBlGpycTD3cDErDfRzVurVEqGF0gg_B=w800-h1400-k-no')">
-          <div class="slot-play"></div>
-          <div class="slot-label">Feteer, Fresh &amp; Flaky</div>
-          <div class="slot-soon">Video Coming Soon</div>
-        </div>
+        <video src="reel-4.mp4" poster="reel-4-poster.jpg" preload="metadata" muted loop playsinline></video>
+        <div class="slot-label">Feteer, Fresh &amp; Flaky</div>
         <div class="slot-badge">♪</div>
       </div>
       <div class="reel-slot reveal" data-reel="r5" style="--d:.36s">
-        <video muted loop playsinline></video>
-        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAFd5gYWqqosjAXrQamOWDPTTkr-DXxXVYYraO-Ds5LtMgrWRqlI-dhkXm64wdiKF08X2aKkgYI2dskDEQo7hC_uqRMMWi7w9FZ6rwDO0FmlbuIYh7YR81w9_E7j-E9i-6lyGqb-QI9_86xr=w800-h1400-k-no')">
-          <div class="slot-play"></div>
-          <div class="slot-label">Behind the Glass</div>
-          <div class="slot-soon">Video Coming Soon</div>
-        </div>
-        <div class="slot-badge">♪</div>
-      </div>
-      <div class="reel-slot reveal" data-reel="r6" style="--d:.42s">
-        <video muted loop playsinline></video>
-        <div class="slot-cover" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAEwnSOmJtjm6pbUYG-2MhKsoh2rw0b8zIe7xqrNAdY2r3wHVYHX7P7OmLxIDimQiNi7GV4AmgdhaRqOQNMia77HoRX_Z5JtQeNZ883vrE2erRiaiOELgBMCDE5gKmDCzIAvdyuJnd9X-kLL=w800-h1400-k-no')">
-          <div class="slot-play"></div>
-          <div class="slot-label">Strawberry Season</div>
-          <div class="slot-soon">Video Coming Soon</div>
-        </div>
+        <video src="reel-5.mp4" poster="reel-5-poster.jpg" preload="metadata" muted loop playsinline></video>
+        <div class="slot-label">Behind the Glass</div>
         <div class="slot-badge">♪</div>
       </div>
       </div><!-- /reels-rail -->
@@ -1475,29 +1453,21 @@ try {
   vid.remove(); // no video support — illustrated scene stays
 }
 
-/* ---------- reel slots: light up when real clips are embedded ---------- */
-/* To fill a slot later: define window.__CAIRO_REELS = { r1:"<base64 mp4>", r2:"...", r3:"..." }
-   in a <script> tag before this one. Any slot without data stays a "coming soon" card. */
+/* ---------- reel slots: local clips, play in view / tap for sound ---------- */
 document.querySelectorAll('.reel-slot').forEach(slot => {
-  const key = slot.dataset.reel;
-  const data = window.__CAIRO_REELS && window.__CAIRO_REELS[key];
   const v = slot.querySelector('video');
-  if (data) {
-    try {
-      const bytes = Uint8Array.from(atob(data), c => c.charCodeAt(0));
-      v.src = URL.createObjectURL(new Blob([bytes], {type: 'video/mp4'}));
-      slot.classList.add('loaded');
-      const io2 = new IntersectionObserver(es => es.forEach(e => {
-        e.isIntersecting ? v.play().catch(()=>{}) : v.pause();
-      }), {threshold:.35});
-      io2.observe(slot);
-      slot.addEventListener('click', () => {        // tap toggles sound
-        v.muted = !v.muted;
-        slot.querySelector('.slot-badge').textContent = v.muted ? '♪' : '✕';
-      });
-    } catch (e) { /* keep cover */ }
+  if (v && v.getAttribute('src')) {
+    slot.classList.add('loaded');
+    const io2 = new IntersectionObserver(es => es.forEach(e => {
+      e.isIntersecting ? v.play().catch(()=>{}) : v.pause();
+    }), {threshold:.35});
+    io2.observe(slot);
+    slot.addEventListener('click', () => {        // tap toggles sound
+      v.muted = !v.muted;
+      slot.querySelector('.slot-badge').textContent = v.muted ? '♪' : '✕';
+    });
   } else {
-    // placeholder: clicking takes guests to the cafe's reels for now
+    // no local clip: send guests to the cafe's reels
     slot.addEventListener('click', () =>
       window.open('https://www.instagram.com/cairocafeofficial/reels/', '_blank', 'noopener'));
   }
