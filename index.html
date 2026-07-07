@@ -7,6 +7,8 @@
 <meta name="description" content="Cairo Café fuses Egyptian heritage with modern flavor — kunafa cups, Egyptian feteer, sweet crepes and handcrafted coffee. 100% halal, family-owned, open late. 772 County Hwy 10 NE, Blaine, MN.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -103,6 +105,7 @@ nav.scrolled{
   display:flex;align-items:center;gap:.55rem;
 }
 .nav-logo svg{width:27px;height:27px}
+.nav-logo-img{width:34px;height:34px;border-radius:50%;object-fit:cover}
 .nav-logo em{font-style:normal;color:var(--gold)}
 .nav-links{display:flex;gap:2.2rem;list-style:none;align-items:center}
 .nav-links a{
@@ -776,6 +779,7 @@ footer::before{
   grid-template-columns:1.4fr 1fr 1fr 1fr;gap:3rem 2.8rem;text-align:left;
 }
 .foot-eye{display:block;margin:0 0 1.1rem;width:56px;opacity:.8}
+.foot-logo-img{display:block;width:74px;height:74px;border-radius:50%;margin:0 0 1.1rem;box-shadow:0 0 0 1px rgba(212,162,78,.35)}
 .foot-eye:hover{opacity:1}
 .foot-logo{font-family:'Cinzel',serif;font-size:1.45rem;font-weight:700;color:var(--papyrus);letter-spacing:.16em}
 .foot-logo em{font-style:normal;color:var(--gold)}
@@ -863,7 +867,7 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
 
 <nav id="nav">
   <a class="nav-logo" href="#top">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M4 10h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-6Z" stroke="#d4a24e" stroke-width="1.6"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" stroke="#d4a24e" stroke-width="1.6"/><path d="M8 7c0-1.2 1-1.4 1-2.6M12 7c0-1.2 1-1.4 1-2.6" stroke="#e9dcbc" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <img class="nav-logo-img" src="logo.png" alt="Cairo Cafe logo">
     CAIRO<em>CAFÉ</em>
   </a>
   <ul class="nav-links">
@@ -1558,7 +1562,8 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
 <footer>
   <div class="foot-grid">
     <div class="foot-brand reveal">
-      <svg class="foot-eye" viewBox="0 0 100 50" fill="none" stroke="#d4a24e" stroke-width="2.2" stroke-linecap="round">
+      <img class="foot-logo-img" src="logo.png" alt="Cairo Cafe logo">
+      <svg class="foot-eye" style="display:none" viewBox="0 0 100 50" fill="none" stroke="#d4a24e" stroke-width="2.2" stroke-linecap="round">
         <path d="M10 25 C25 8 75 8 90 25 C75 42 25 42 10 25 Z"/>
         <circle cx="50" cy="25" r="8" fill="#d4a24e" fill-opacity=".35"/>
         <circle cx="50" cy="25" r="3.4" fill="#d4a24e"/>
