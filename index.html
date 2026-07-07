@@ -761,7 +761,7 @@ h2{
 
 /* ============ FOOTER ============ */
 footer{
-  background:#080502;padding:3.4rem 5vw 2.5rem;text-align:center;
+  background:#080502;padding:4rem 5vw 2rem;
   border-top:1px solid rgba(212,162,78,.22);position:relative;overflow:hidden;
 }
 footer::before{
@@ -771,12 +771,48 @@ footer::before{
   animation:footGlow 5s ease-in-out infinite alternate;
 }
 @keyframes footGlow{from{opacity:.3}to{opacity:1}}
-.foot-eye{margin:0 auto 1.2rem;width:56px;opacity:.8}
+.foot-grid{
+  max-width:var(--maxw);margin:0 auto;display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;gap:3rem 2.8rem;text-align:left;
+}
+.foot-eye{display:block;margin:0 0 1.1rem;width:56px;opacity:.8}
 .foot-eye:hover{opacity:1}
-.foot-logo{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:700;color:var(--papyrus);letter-spacing:.16em}
+.foot-logo{font-family:'Cinzel',serif;font-size:1.45rem;font-weight:700;color:var(--papyrus);letter-spacing:.16em}
 .foot-logo em{font-style:normal;color:var(--gold)}
-.foot-tag{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(233,220,188,.55);margin:.5rem 0 1.5rem}
+.foot-blurb{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;
+  color:rgba(233,220,188,.6);line-height:1.55;margin:.9rem 0 1.5rem;max-width:32ch;
+}
+.foot-brand .socials{margin-top:0}
+.foot-col h4{
+  font-family:'Cinzel',serif;color:var(--papyrus);font-size:.92rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.3rem;
+}
+.foot-col h4::after{content:'';display:block;width:34px;height:2px;background:var(--gold);margin-top:.55rem}
+.foot-links{list-style:none}
+.foot-links li{margin-bottom:.85rem}
+.foot-link{
+  display:inline-flex;align-items:flex-start;gap:.65rem;
+  color:var(--sand);text-decoration:none;font-size:.92rem;line-height:1.5;transition:color .3s;
+}
+.foot-link svg{
+  width:18px;height:18px;flex-shrink:0;margin-top:.15em;
+  fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke .3s;
+}
+a.foot-link:hover{color:var(--gold-bright)}
+a.foot-link:hover svg{stroke:var(--gold-bright)}
+a.foot-link:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;border-radius:2px}
+.foot-hours li{color:var(--sand);font-size:.92rem;line-height:1.5}
+.foot-note{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:1.06rem;margin-top:1.2rem}
+.foot-bottom{
+  max-width:var(--maxw);margin:3.2rem auto 0;padding-top:1.5rem;text-align:center;
+  border-top:1px solid rgba(212,162,78,.22);
+}
 footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
+@media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.foot-grid{grid-template-columns:1fr;gap:2.6rem}}
+@media(max-width:700px){footer{padding-bottom:96px}}
 
 /* ============ BACK TO TOP ============ */
 #toTop{
@@ -1514,16 +1550,57 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
 
 <!-- ================= FOOTER ================= -->
 <footer>
-  <svg class="foot-eye" viewBox="0 0 100 50" fill="none" stroke="#d4a24e" stroke-width="2.2" stroke-linecap="round">
-    <path d="M10 25 C25 8 75 8 90 25 C75 42 25 42 10 25 Z"/>
-    <circle cx="50" cy="25" r="8" fill="#d4a24e" fill-opacity=".35"/>
-    <circle cx="50" cy="25" r="3.4" fill="#d4a24e"/>
-    <path d="M62 38 C60 44 55 47 50 46"/>
-    <path d="M38 38 L34 47"/>
-  </svg>
-  <div class="foot-logo">CAIRO<em>CAFÉ</em></div>
-  <p class="foot-tag">Coffee · Crepes · Kunafa — Blaine, Minnesota</p>
-  <small>© 2026 Cairo Café · 772 County Hwy 10 NE, Blaine, MN 55434 · (763) 264-6379</small>
+  <div class="foot-grid">
+    <div class="foot-brand reveal">
+      <svg class="foot-eye" viewBox="0 0 100 50" fill="none" stroke="#d4a24e" stroke-width="2.2" stroke-linecap="round">
+        <path d="M10 25 C25 8 75 8 90 25 C75 42 25 42 10 25 Z"/>
+        <circle cx="50" cy="25" r="8" fill="#d4a24e" fill-opacity=".35"/>
+        <circle cx="50" cy="25" r="3.4" fill="#d4a24e"/>
+        <path d="M62 38 C60 44 55 47 50 46"/>
+        <path d="M38 38 L34 47"/>
+      </svg>
+      <div class="foot-logo">CAIRO<em>CAFÉ</em></div>
+      <p class="foot-blurb">Egyptian coffee, crepes, and kunafa — made fresh in Blaine, Minnesota. Morning coffee, midnight kunafa; we keep the lights on late.</p>
+      <div class="socials">
+        <a href="https://www.instagram.com/cairocafeofficial" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM17.2 5.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61575594283378" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.5 1.6-1.5h1.3V4.9c-.2 0-1-.1-1.9-.1-1.9 0-3.2 1.2-3.2 3.3V11H9v3h2.3v7h2.2Z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-col reveal" style="--d:.12s" role="navigation" aria-label="Explore">
+      <h4>Explore</h4>
+      <ul class="foot-links">
+        <li><a class="foot-link" href="#story"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg><span>Our Story</span></a></li>
+        <li><a class="foot-link" href="#menu"><svg viewBox="0 0 24 24"><path d="M4 9h11v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V9Z"/><path d="M15 10h1.6a2.4 2.4 0 0 1 0 4.8H15"/><path d="M8 5.5c0-1 1-1 1-2M12 5.5c0-1 1-1 1-2"/></svg><span>Menu</span></a></li>
+        <li><a class="foot-link" href="#gallery"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 16.5 9 12l4 4 3-3 4 3.5"/></svg><span>Gallery</span></a></li>
+        <li><a class="foot-link" href="#reels"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 9.5v5l4.5-2.5Z"/></svg><span>Reels</span></a></li>
+        <li><a class="foot-link" href="#visit"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg><span>Hours &amp; Visit</span></a></li>
+      </ul>
+    </div>
+    <div class="foot-col reveal" style="--d:.24s">
+      <h4>Visit Us</h4>
+      <ul class="foot-links">
+        <li><a class="foot-link" href="https://maps.google.com/?q=Cairo+Cafe,+772+County+Hwy+10+NE,+Blaine,+MN+55434" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg><span>772 County Hwy 10 NE,<br>Blaine, MN 55434</span></a></li>
+        <li><a class="foot-link" href="tel:+17632646379"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg><span>(763) 264-6379</span></a></li>
+        <li><span class="foot-link"><svg viewBox="0 0 24 24"><path d="M7 3v6a2 2 0 0 0 4 0V3"/><path d="M9 3v18"/><path d="M17 3c-1.6 1-2.5 3-2.5 5.5V12H17v9"/></svg><span>Dine in · Takeout · Family friendly</span></span></li>
+      </ul>
+    </div>
+    <div class="foot-col reveal" style="--d:.36s">
+      <h4>Hours</h4>
+      <ul class="foot-links foot-hours">
+        <li>Mon–Thu · 9 AM – 11 PM</li>
+        <li>Fri–Sat · 9 AM – 1 AM</li>
+        <li>Sun · 9 AM – 12 AM</li>
+      </ul>
+      <p class="foot-note">Late-night cravings welcome.</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <small>© 2026 Cairo Café · Blaine, MN</small>
+  </div>
 </footer>
 
 <button id="toTop" aria-label="Back to top">↑</button>
