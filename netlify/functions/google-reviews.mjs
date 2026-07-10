@@ -1,5 +1,5 @@
 // Returns live Google rating / review count / recent reviews for Cairo Café.
-// Cached at the CDN for 12h so Places API is hit at most ~2x/day.
+// Cached at the CDN for 24h so Places API is hit at most ~1x/day.
 // Env vars (set in Netlify): GOOGLE_PLACES_API_KEY, GOOGLE_PLACE_ID
 
 export default async () => {
@@ -36,7 +36,7 @@ export default async () => {
 
   return Response.json(body, {
     headers: {
-      'Cache-Control': 'public, max-age=3600, s-maxage=43200, stale-while-revalidate=86400',
+      'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=172800',
       'Access-Control-Allow-Origin': '*',
     },
   });
