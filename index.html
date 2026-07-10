@@ -1012,8 +1012,8 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
       <p>Cairo Café fuses <strong>Egyptian heritage</strong> with modern flavor — flaky layered <strong>feteer</strong> baked the way it's been made along the Nile for generations, warm <strong>kunafa cups</strong>, sweet and savory crepes, and handcrafted coffee poured with care.</p>
       <p>We're a <strong>family-owned</strong> café and everything we serve is <strong>100% halal</strong>. The vibe is unmatched — chill and sunlit during the day, glowing and lively late into the night. Come for the coffee, stay for the board games, the string lights, and the feeling of being a guest in our home.</p>
       <div class="about-stats">
-        <div class="stat"><div class="num"><span class="count" data-target="4.9" data-decimals="1">0</span>★</div><div class="lbl">Google Rating</div></div>
-        <div class="stat"><div class="num"><span class="count" data-target="239">0</span>+</div><div class="lbl">Reviews</div></div>
+        <div class="stat"><div class="num"><span class="count" data-live="rating" data-target="4.9" data-decimals="1">0</span>★</div><div class="lbl">Google Rating</div></div>
+        <div class="stat"><div class="num"><span class="count" data-live="count" data-target="239">0</span>+</div><div class="lbl">Reviews</div></div>
         <div class="stat"><div class="num"><span class="count" data-target="1">0</span> AM</div><div class="lbl">Weekend Close</div></div>
       </div>
     </div>
@@ -1478,10 +1478,10 @@ footer small{color:rgba(233,220,188,.4);font-size:.78rem;letter-spacing:.12em}
     <h2 class="reveal">Loved by Blaine</h2>
     <div class="reveal">
       <div class="stars-row" id="starsRow"><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span></div>
-      <div class="rev-score"><span class="count" data-target="4.9" data-decimals="1">0</span></div>
-      <div class="rev-count"><span class="count" data-target="239">0</span>+ Google Reviews</div>
+      <div class="rev-score"><span class="count" data-live="rating" data-target="4.9" data-decimals="1">0</span></div>
+      <div class="rev-count"><span class="count" data-live="count" data-target="239">0</span>+ Google Reviews</div>
     </div>
-    <div class="rev-quotes">
+    <div class="rev-quotes" id="revQuotes">
       <div class="quote reveal" style="--d:0s">
         <p>Blaine has a new café you need to know about — the kunafa cups and specialty coffee are already making noise.</p>
         <div class="who">— Wassup Minnesota</div>
@@ -1997,6 +1997,29 @@ const autoGlide = setInterval(() => {
   if (r.top > innerHeight || r.bottom < 0) return; // only when visible
   goTo(vIdx() + 1);
 }, 3800);
+
+/* ---------- live Google reviews (Netlify function; silent fallback to baked-in numbers) ---------- */
+fetch('/api/google-reviews')
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(d => {
+    if (d.rating) document.querySelectorAll('[data-live="rating"]').forEach(el => {
+      el.dataset.target = d.rating;
+      if (el.textContent !== '0') el.textContent = d.rating.toFixed(1);
+    });
+    if (d.count) document.querySelectorAll('[data-live="count"]').forEach(el => {
+      el.dataset.target = d.count;
+      if (el.textContent !== '0') el.textContent = d.count;
+    });
+    if (d.reviews && d.reviews.length === 3) {
+      const cards = document.querySelectorAll('#revQuotes .quote');
+      d.reviews.forEach((rv, i) => {
+        if (!cards[i]) return;
+        cards[i].querySelector('p').textContent = rv.text;
+        cards[i].querySelector('.who').textContent = '\u2014 ' + rv.author;
+      });
+    }
+  })
+  .catch(() => {});
 </script>
 </body>
 </html>
